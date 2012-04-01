@@ -1,0 +1,295 @@
+/* Copyright (C) 2010 Mark Einon
+ * 
+ *  mark.einon@gmail.com
+ */
+
+package uk.co.einon.lifewallpaper;
+
+import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.os.Handler;
+import android.service.wallpaper.WallpaperService;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+
+/*
+ * This animated wallpaper fills the screen with Conway's Life
+ */
+public class Life extends WallpaperService {
+
+	public static final String SHARED_PREFS_NAME = "LifeSettings";
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	}
+
+	@Override
+	public Engine onCreateEngine() {
+		return new LifeEngine();
+	}
+
+	class LifeEngine extends Engine implements
+			SharedPreferences.OnSharedPreferenceChangeListener {
+		private final Handler mHandler = new Handler();
+
+		private final Paint mPaint = new Paint();
+		private int mWidth;
+		private int mHeight;
+		private byte[][] mGrid;
+		private int mIteration = 0;
+		private int mZoom = 4;
+		private boolean mScalingChanged = false;
+		private int mTimeout = 60;
+		private int mSpeed = 35;
+		private int mBackground = 0x95000000;
+
+		private final Runnable mCycleLife = new Runnable() {
+			public void run() {
+				drawLife();
+			}
+		};
+		private boolean mVisible;
+		private SharedPreferences mPrefs;
+
+		LifeEngine() {
+			mPrefs = Life.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
+			mPrefs.registerOnSharedPreferenceChangeListener(this);
+			onSharedPreferenceChanged(mPrefs, null);
+
+			// Create a Paint to draw the lines for our cube
+			final Paint paint = mPaint;
+			paint.setStrokeCap(Paint.Cap.ROUND);
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setAntiAlias(false);
+			paint.setDither(false);
+		}
+
+		public void onSharedPreferenceChanged(SharedPreferences prefs,
+				String key) {
+			final Paint paint = mPaint;
+
+			// Set the colour
+			String colour = prefs.getString("life_colour", "red");
+
+			if (colour.equals("red")) {
+				paint.setColor(0xffff1111);
+			}
+			if (colour.equals("green")) {
+				paint.setColor(0xff11ff44);
+			}
+			if (colour.equals("grey")) {
+				paint.setColor(0xffaaaaaa);
+			}
+			if (colour.equals("blue")) {
+				paint.setColor(0xff1111aa);
+			}
+			if (colour.equals("white")) {
+				paint.setColor(0xffffffff);
+			}
+			if (colour.equals("pink")) {
+				paint.setColor(0xfffc80a5);
+			}
+			if (colour.equals("black")) {
+				paint.setColor(0xff000000);
+			}
+
+			// Set the scaling
+			String zoom = prefs.getString("life_zoom", "4");
+			mZoom = Integer.parseInt(zoom);
+			paint.setStrokeWidth(mZoom);
+			mScalingChanged = true;
+
+			// Set the timeout
+			String timeout = prefs.getString("life_timeout", "60");
+			mTimeout = Integer.parseInt(timeout);
+			mIteration = 0;
+
+			// Set the speed
+			String speed = prefs.getString("life_speed", "35");
+			mSpeed = Integer.parseInt(speed);
+			
+			// Set the background
+			String background = prefs.getString("background_colour", "black");
+
+			if (background.equals("red")) {
+				mBackground = 0x95880909;
+			}
+			if (background.equals("green")) {
+				mBackground = 0x95098821;
+			}
+			if (background.equals("grey")) {
+				mBackground = 0x95555555;
+			}
+			if (background.equals("blue")) {
+				mBackground = 0x95090955;
+			}
+			if (background.equals("white")) {
+				mBackground = 0x95888888;
+			}
+			if (background.equals("pink")) {
+				mBackground = 0x95864053;
+			}
+			if (background.equals("black")) {
+				mBackground = 0x95000000;
+			}
+		}
+
+		@Override
+		public void onCreate(SurfaceHolder surfaceHolder) {
+			super.onCreate(surfaceHolder);
+			mWidth = getDesiredMinimumWidth() / mZoom;
+			mHeight = getDesiredMinimumHeight() / mZoom;
+			mGrid = new byte[mWidth + 1][mHeight + 1];
+			// By default we don't get touch events, so enable them.
+			setTouchEventsEnabled(true);
+		}
+
+		@Override
+		public void onDestroy() {
+			super.onDestroy();
+			mHandler.removeCallbacks(mCycleLife);
+		}
+
+		@Override
+		public void onVisibilityChanged(boolean visible) {
+			mVisible = visible;
+			if (visible) {
+				drawLife();
+			} else {
+				mHandler.removeCallbacks(mCycleLife);
+			}
+		}
+
+		@Override
+		public void onSurfaceChanged(SurfaceHolder holder, int format,
+				int width, int height) {
+			super.onSurfaceChanged(holder, format, width, height);
+			drawLife();
+		}
+
+		@Override
+		public void onSurfaceCreated(SurfaceHolder holder) {
+			super.onSurfaceCreated(holder);
+		}
+
+		@Override
+		public void onSurfaceDestroyed(SurfaceHolder holder) {
+			super.onSurfaceDestroyed(holder);
+			mVisible = false;
+			mHandler.removeCallbacks(mCycleLife);
+		}
+
+		@Override
+		public void onOffsetsChanged(float xOffset, float yOffset, float xStep,
+				float yStep, int xPixels, int yPixels) {
+			drawLife();
+		}
+
+		/*
+		 * Store the position of the touch event so we can use it for drawing
+		 * later
+		 */
+		@Override
+		public void onTouchEvent(MotionEvent event) {
+			int x = (int) event.getX() / mZoom;
+			int y = (int) event.getY() / mZoom;
+			byte value = 3;
+
+			if ((x > 2) && (y > 2) && (x < mWidth - 1) && (y < mHeight - 1)) {
+				mGrid[x][y] = 
+	           	mGrid[x-1][y-1] =
+	            mGrid[x-1][y-2] =
+	            mGrid[x+1][y+1] =
+	            mGrid[x+1][y-1] = value;
+				mIteration = 0;
+			}
+			super.onTouchEvent(event);
+		}
+
+		void drawLife() {
+			final SurfaceHolder holder = getSurfaceHolder();
+
+			if (mScalingChanged) {
+				mWidth = getDesiredMinimumWidth() / mZoom;
+				mHeight = getDesiredMinimumHeight() / mZoom;
+				mGrid = new byte[mWidth + 1][mHeight + 1];
+				mScalingChanged = false;
+			}
+
+			Canvas c = null;
+			try {
+				c = holder.lockCanvas();
+				if (c != null) {
+					// draw something
+					lifeCycle(c);
+				}
+			} finally {
+				if (c != null)
+					holder.unlockCanvasAndPost(c);
+			}
+
+			// Reschedule the next redraw
+			mHandler.removeCallbacks(mCycleLife);
+			if (mVisible) {
+				mHandler.postDelayed(mCycleLife, 1000 / mSpeed);
+			}
+		}
+
+		void lifeCycle(Canvas c) {
+			int neighbours = 0;
+			byte living = 0;
+			boolean clear = false;
+			if (mTimeout != 0) {
+				mIteration++;
+			}
+			if (mIteration > mTimeout) {
+				clear = true;
+				mIteration = 0;
+				c.drawColor(0xffffffff);
+			}
+			c.save();
+			c.drawColor(mBackground);
+
+			for (int xx = 1; xx < mWidth; xx++) {
+				for (int yy = 1; yy < mHeight; yy++) {
+					if (clear) {
+						mGrid[xx][yy] = 0;
+						continue;
+					}
+
+					living = mGrid[xx][yy];
+
+					// Draw cells
+					if (living > 0) {
+						c.drawPoint(xx * mZoom, yy * mZoom, mPaint);
+					}
+
+					// update cells
+					neighbours = mGrid[xx - 1][yy + 1] + mGrid[xx][yy + 1] + mGrid[xx + 1][yy + 1] 
+					           + mGrid[xx - 1][yy]     + /* [xx][yy]  + */   mGrid[xx + 1][yy]
+							   + mGrid[xx - 1][yy - 1] + mGrid[xx][yy - 1] + mGrid[xx + 1][yy - 1];
+
+					if (living > 0) {
+						if ((neighbours != 2) && (neighbours != 3)) {
+							// Kill cell
+							mGrid[xx][yy] -= 1;
+						}
+					} else {
+						if (neighbours == 3) {
+							// Grow cell
+							mGrid[xx][yy] = 1;
+						}
+					}
+				}
+			}
+			c.restore();
+		}
+	}
+}

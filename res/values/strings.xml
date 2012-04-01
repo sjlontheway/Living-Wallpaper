@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="life">Living Wallpaper</string>
+    <string name="author">Einon</string>
+    <string name="descript">A living wallpaper that grows when touched</string>
+    <string name="app_name">Living Wallpaper</string>
+	<string name="wallpapers">Living Wallpaper</string>
+	<string name="life_settings">Living Wallpaper Settings</string>
+	<string name="color_title">Cell Colour</string>
+	<string name="color_summary">Change the cell colour</string>
+	<string name="background_title">Background Colour</string>
+	<string name="background_summary">Change the cell background colour</string>
+	<string name="zoom_title">Zoom</string>
+	<string name="zoom_summary">Change the resolution</string>
+	<string name="timeout_title">Timeout</string>
+	<string name="timeout_summary">Change how long patterns stay displayed</string>
+    <string name="speed_title">Speed</string>
+	<string name="speed_summary">Change how fast cells spawn</string>
+	<string name="shape_title">"Cell Shape</string>
+	<string name="shape_summary">Choose the cell shape</string>
+</resources>

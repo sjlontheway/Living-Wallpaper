@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" style="@style/Theme_Black">
+    <string-array name="life_colours">		
+        <item>"Multicolour"</item>
+        <item>"Snowtime"</item>
+        <item>"Hot Pink"</item>
+        <item>"Midnight"</item>
+	    <item>"Slasher"</item>
+        <item>"Greenfingers"</item>
+        <item>"Mouldy"</item>
+        <item>"Icy"</item>
+    </string-array>
+    <string-array name="colours">
+        <item>"change"</item>
+        <item>"white"</item>
+        <item>"pink"</item>        
+        <item>"black"</item>
+	    <item>"red"</item>
+        <item>"green"</item>
+        <item>"grey"</item>
+        <item>"blue"</item>
+    </string-array>
+    
+    <string-array name="life_zooms">
+	    <item>"x1"</item>
+        <item>"x4"</item>
+        <item>"x8"</item>
+        <item>"x16"</item>
+    </string-array>
+    <string-array name="zooms">
+	    <item>"4"</item>
+        <item>"8"</item>
+        <item>"16"</item>
+        <item>"32"</item>
+    </string-array>
+    
+    <string-array name="life_timeouts">
+	    <item>"Tiny"</item>
+        <item>"Short"</item>
+        <item>"Medium"</item>
+        <item>"Long"</item>
+        <item>"Infinite"</item>
+    </string-array>
+    <string-array name="timeouts">
+	    <item>"20"</item>
+        <item>"60"</item>
+        <item>"100"</item>
+        <item>"150"</item>
+        <item>"0"</item>
+    </string-array>
+    
+    <string-array name="life_speeds">
+	    <item>"Slowest"</item>
+        <item>"Slow"</item>
+        <item>"Medium"</item>
+        <item>"Fast"</item>
+        <item>"Fastest"</item>
+    </string-array>
+    <string-array name="speeds">
+	    <item>"10"</item>
+        <item>"25"</item>
+        <item>"35"</item>
+        <item>"50"</item>
+        <item>"70"</item>
+    </string-array>
+    
+	<string-array name="life_cell_shapes">
+	 	<item>"Circle"</item>
+		<item>"Square"</item>
+    </string-array>
+</resources>

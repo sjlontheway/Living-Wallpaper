@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string-array name="life_colours">
+	    <item>"Slasher"</item>
+        <item>"Greenfingers"</item>
+        <item>"Mouldy"</item>
+        <item>"Icy"</item>
+        <item>"Snow"</item>
+        <item>"Pink!"</item>
+    </string-array>
+    <string-array name="colours">
+	    <item>"red"</item>
+        <item>"green"</item>
+        <item>"grey"</item>
+        <item>"blue"</item>
+        <item>"white"</item>
+        <item>"pink"</item>
+    </string-array>
+    
+    <string-array name="life_zooms">
+	    <item>"1"</item>
+        <item>"4"</item>
+        <item>"8"</item>
+        <item>"16"</item>
+    </string-array>
+    <string-array name="zooms">
+	    <item>"4"</item>
+        <item>"8"</item>
+        <item>"16"</item>
+        <item>"32"</item>
+    </string-array>
+    
+    <string-array name="life_timeouts">
+	    <item>"Tiny"</item>
+        <item>"Short"</item>
+        <item>"Medium"</item>
+        <item>"Long"</item>
+        <item>"Infinite"</item>
+    </string-array>
+    <string-array name="timeouts">
+	    <item>"20"</item>
+        <item>"60"</item>
+        <item>"100"</item>
+        <item>"150"</item>
+        <item>"0"</item>
+    </string-array>
+    
+    <string-array name="life_speeds">
+	    <item>"Slowest"</item>
+        <item>"Slow"</item>
+        <item>"Medium"</item>
+        <item>"Fast"</item>
+        <item>"Fastest"</item>
+    </string-array>
+    <string-array name="speeds">
+	    <item>"10"</item>
+        <item>"25"</item>
+        <item>"35"</item>
+        <item>"50"</item>
+        <item>"70"</item>
+    </string-array>
+</resources>

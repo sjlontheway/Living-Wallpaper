@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+		xmlns:android="http://schemas.android.com/apk/res/android"	
+        android:title="@string/life_settings"
+        android:key="life_settings">
+
+    <ListPreference
+            android:key="life_colour"
+            android:title="@string/color_title"
+            android:summary="@string/color_summary"
+            android:entries="@array/life_colours"
+            android:entryValues="@array/colours" 
+            android:selectable="true" 
+            android:enabled="true" 
+            android:defaultValue="change"/>
+                        
+     <ListPreference
+            android:key="background_colour"
+            android:title="@string/background_title"
+            android:summary="@string/background_summary"
+            android:entries="@array/life_colours"
+            android:entryValues="@array/colours" 
+            android:selectable="true" 
+            android:enabled="true" 
+            android:defaultValue="black"/>
+            
+    <ListPreference
+            android:key="life_zoom"
+            android:title="@string/zoom_title"
+            android:summary="@string/zoom_summary"
+            android:entries="@array/life_zooms"
+            android:entryValues="@array/zooms" 
+            android:selectable="true" 
+            android:enabled="true" 
+            android:defaultValue="16"/>
+
+     <ListPreference
+            android:key="life_speed"
+            android:title="@string/speed_title"
+            android:summary="@string/speed_summary"
+            android:entries="@array/life_speeds"
+            android:entryValues="@array/speeds" 
+            android:selectable="true" 
+            android:enabled="true" 
+            android:defaultValue="25"/>            
+                        
+     <ListPreference
+            android:key="life_timeout"
+            android:title="@string/timeout_title"
+            android:summary="@string/timeout_summary"
+            android:entries="@array/life_timeouts"
+            android:entryValues="@array/timeouts" 
+            android:selectable="true" 
+            android:enabled="true" 
+            android:defaultValue="100"/>
+
+	<ListPreference
+            android:key="cell_shape"
+            android:title="@string/shape_title"
+            android:summary="@string/shape_summary"
+            android:entries="@array/life_cell_shapes"
+            android:entryValues="@array/life_cell_shapes"
+            android:selectable="true" 
+            android:enabled="true" 
+            android:defaultValue="Circle"/>
+      
+</PreferenceScreen>

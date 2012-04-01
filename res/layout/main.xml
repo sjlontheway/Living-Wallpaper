@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/uk.co.einon.lifewallpaper"
+	android:id="@+id/mainLayout"
+    android:orientation="vertical"
+    android:padding="0px"
+    android:layout_margin="0px"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+<ListView
+  android:id="@android:id/list"
+  android:layout_margin="0px"
+  android:padding="0px"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:layout_weight="1"/>
+ 
+ <com.google.ads.AdView android:id="@+id/adView"
+      android:layout_width="480px"
+      android:layout_height="75px"
+      app:adUnitId="a14dbbf91a71208"
+      app:adSize="BANNER"/>
+</LinearLayout>
